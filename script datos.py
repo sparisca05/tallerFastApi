@@ -10,7 +10,7 @@ conn = psycopg2.connect(
 )
 
 # Ruta del archivo CSV
-csv_file_path = 'C:/Users/cpari/Downloads/Usuarios_portal_datos_abiertos_datos.gov.co_20240919.csv'
+csv_file_path = "C:/Users/cpari/Downloads/Usuarios_portal_datos_abiertos_datos.gov.co_20240919.csv"
 
 # Crear una conexión y un cursor
 cursor = conn.cursor()
