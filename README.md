@@ -7,18 +7,29 @@ La aplicación se levanta utilizando la herramienta de uvicorn.
 ### Requisitos:
 - WSL 2 Ubuntu
 - Crear un ambiente con miniconda:
+
   Ejecutar:
+  
     wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
+  
     bash Miniconda3-latest-Linux-x86_64.sh
+  
     conda create --name myenv python=3.12
+  
 - Dentro del proyecto ejecuta:
     bash install_requirements.sh
+  
 - Para levantar el proyecto ejecuta:
     python -m uvicorn main:app --reload
+  
 - Si prefieres que el proyecto se levante siempre al iniciar la máquina (WSL) debes crear el archivo .service de la siguiente forma:
+
   Ejecutar:
+  
     sudo nano /etc/systemd/system/fastapi_prueba.service
+  
   El archivo debe verse así:
+  
     [Unit]
     Description=FastAPI service
     After=network.target
@@ -39,11 +50,12 @@ La aplicación se levanta utilizando la herramienta de uvicorn.
   1. Se debe contar con wsl 2, se puede validar en powershell con: wsl -l -v
   2. Correr en WSL: sudo nano /etc/wsl.conf
   3. Copiar lo siguiente:
+
     [boot]
     systemd=true
   
-  4. Correr en powershell: wsl --shutdown
-  5. Si todo fue correcto, en Linux al correr lo siguiente debería aparecer systemd: systemctl list-units --type=service
+  5. Correr en powershell: wsl --shutdown
+  6. Si todo fue correcto, en Linux al correr lo siguiente debería aparecer systemd: systemctl list-units --type=service
 
   Para activar el servicio cada que se inicie la máquina:
   1. Recargar los servicios de systemd: sudo systemctl daemon-reload
@@ -53,7 +65,9 @@ La aplicación se levanta utilizando la herramienta de uvicorn.
   5. Parar el servicio: sudo systemctl stop fastapi_prueba
 
 - crear un archivo .env dentro del proyecto
+
   Debe verse así:
+  
     CONDA_ENV=myenv
 
     DB_HOST='localhost'
