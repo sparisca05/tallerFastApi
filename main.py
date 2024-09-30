@@ -3,6 +3,21 @@ import psycopg2
 from fastapi import FastAPI
 from pydantic import BaseModel
 from typing import List
+import os
+from dotenv import load_dotenv
+
+from script_datos import insert_data
+
+load_dotenv()
+
+db_host = os.getenv('DB_HOST')
+db_name = os.getenv('DB_NAME')
+db_user = os.getenv('DB_USER')
+db_password = os.getenv('DB_PASSWORD')
+
+DATABASE_URL = f"postgresql://{db_user}:{db_password}@{db_host}:5432/{db_name}"
+
+insert_data(DATABASE_URL)
 
 app = FastAPI()
 
@@ -15,12 +30,7 @@ class UserIn(BaseModel):
     last_active: date
 
 def get_db_connection():
-    conn = psycopg2.connect(
-        host="127.0.0.1",
-        database="users",
-        user="postgres",
-        password="Simon2604*"
-    )
+    conn = psycopg2.connect(DATABASE_URL)
     return conn
 
 @app.get("/")
