@@ -1,4 +1,4 @@
-psycopg2
-dotenv
+psycopg2-binary
+python-dotenv
 uvicorn
 fastapi
