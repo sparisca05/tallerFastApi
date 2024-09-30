@@ -5,7 +5,7 @@ def insert_data(database_url):
     # Configurar la conexión a la base de datos PostgreSQL
     conn = psycopg2.connect(database_url)
     # Ruta del archivo CSV
-    csv_file_path = '/mnt/c/users/cpari/Downloads/Usuarios_portal_datos_abiertos_datos.gov.co_20240919.csv'
+    csv_file_path = 'https://www.datos.gov.co/resource/jtnk-dmga.json'
     # Crear una conexión y un cursor
     cursor = conn.cursor()
 
