@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, date
 import psycopg2
 from fastapi import FastAPI
 from pydantic import BaseModel
@@ -6,13 +6,13 @@ from typing import List
 
 app = FastAPI()
 
-class User(BaseModel):
+class UserIn(BaseModel):
     uid: str
     display_name: str
     email_address: str
     status: str
     role: str
-    last_active: str
+    last_active: date
 
 def get_db_connection():
     conn = psycopg2.connect(
@@ -84,3 +84,42 @@ def read_users_by_date(start_date: str, end_date: str):
     ]
     
     return {"usuarios": result}
+
+@app.post("/post/")
+def create_users(users: List[UserIn]):
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    registros_agregados = 0
+    total_registros = 0
+
+    try:
+        for user in users:
+            try:
+                cursor.execute("""
+                    INSERT INTO usuarios (uid, display_name, email_address, status, role, last_active)
+                    VALUES (%s, %s, %s, %s, %s, %s)
+                """, (user.uid, user.display_name, user.email_address, user.status, user.role, user.last_active))
+                registros_agregados += 1
+            except Exception as e:
+                print(f"Error al insertar el usuario {user.uid}: {e}")
+                raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=f"Error al insertar el usuario {user.uid}.")
+
+        conn.commit()
+
+        cursor.execute("SELECT COUNT(*) FROM usuarios")
+        total_registros = cursor.fetchone()[0]
+
+    except Exception as e:
+        print(f"Error general: {e}")
+        conn.rollback()
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Error general durante la operación")
+
+    finally:
+        cursor.close()
+        conn.close()
+
+    return {
+        "registros_agregados": registros_agregados,
+        "total_registros": total_registros
+    }
