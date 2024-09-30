@@ -8,6 +8,13 @@ def insert_data(database_url):
     csv_file_path = '/mnt/c/users/cpari/Downloads/Usuarios_portal_datos_abiertos_datos.gov.co_20240919.csv'
     # Crear una conexión y un cursor
     cursor = conn.cursor()
+
+    # Verificar si la tabla ya tiene datos
+    cursor.execute("SELECT COUNT(*) FROM usuarios")
+    result = cursor.fetchone()
+    if result[0] > 0:
+        print("La tabla ya contiene datos. No se realizará la inserción.")
+        return
     # Leer el archivo CSV y cargar los datos en la tabla
     try:
         with open(csv_file_path, mode='r', encoding='latin1') as file:  # Cambiar a 'utf-8' si el archivo ya está en ese formato
