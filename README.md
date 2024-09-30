@@ -1,4 +1,4 @@
-### Sistemas Operativos Taller FastAPI
+# Sistemas Operativos Taller FastAPI
 ## Integrantes: Simón Parisca, Juan Esteban Castaño y Nicolás Echeverri
 ### Descripción:
 Este proyecto permite realizar algunos métodos HTTP por medio de endpoints utilizando FastAPI y Swagger.
@@ -54,10 +54,8 @@ La aplicación se levanta utilizando la herramienta de uvicorn.
 
 - crear un archivo .env dentro del proyecto
   Debe verse así:
-    # Ambiente
     CONDA_ENV=myenv
-    
-    # Base de datos
+
     DB_HOST='localhost'
     DB_NAME='base_de_datos'
     DB_USER='tu_usuario'
