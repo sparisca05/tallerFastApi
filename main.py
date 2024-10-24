@@ -1,14 +1,19 @@
 from datetime import datetime, date
 import psycopg2
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException, status
 from pydantic import BaseModel
 from typing import List
 import os
 from dotenv import load_dotenv
+import boto3
+import json
 
 from script_datos import insert_data
 
 load_dotenv()
+
+s3= boto3.client('s3')
+bucket_name = os.getenv('BUCKET_NAME')
 
 db_host = os.getenv('DB_HOST')
 db_name = os.getenv('DB_NAME')
@@ -28,6 +33,20 @@ class UserIn(BaseModel):
     status: str
     role: str
     last_active: date
+
+def generate_json(uid, display_name, email_address, status, role, last_active):
+    user_data = {
+        "uid": uid,
+        "display_name": display_name,
+        "email_address": email_address,
+        "status": status,
+        "role": role,
+        "last_active": last_active.isoformat() if isinstance(last_active, (date)) else last_active
+    }
+    
+    # Guardar en un archivo .json
+    with open(f'users/{uid}.json', 'w') as json_file:
+        json.dump(user_data, json_file, indent=4)
 
 def get_db_connection():
     conn = psycopg2.connect(DATABASE_URL)
@@ -111,6 +130,11 @@ def create_users(users: List[UserIn]):
                     VALUES (%s, %s, %s, %s, %s, %s)
                 """, (user.uid, user.display_name, user.email_address, user.status, user.role, user.last_active))
                 registros_agregados += 1
+
+                # Convertir el usuario a JSON y subirlo a S3
+                generate_json(user.uid, user.display_name, user.email_address, user.status, user.role, user.last_active)
+                s3.upload_file(f'users/{user.uid}.json', bucket_name, f'users/{user.uid}.json')
+
             except Exception as e:
                 print(f"Error al insertar el usuario {user.uid}: {e}")
                 raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=f"Error al insertar el usuario {user.uid}.")
