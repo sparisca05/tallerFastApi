@@ -1,0 +1,8 @@
+{
+    "uid": "bucket-user-2",
+    "display_name": "Bucket User 2",
+    "email_address": "user2@eia.edu.co",
+    "status": "string",
+    "role": "string",
+    "last_active": "2024-10-31"
+}
