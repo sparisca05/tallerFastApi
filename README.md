@@ -94,3 +94,19 @@ La aplicación se levanta utilizando la herramienta de uvicorn.
   ```bash
   sudo -u postgres psql
   ```
+  Dentro de psql:
+  ```bash
+    CREATE DATABASE base_de_datos;
+    \c base_de_datos
+    CREATE TABLE tabla (
+      uid VARCHAR(255) PARIMARY KEY,
+      display_name VARCHAR(255) NOT NULL,
+      email_address VARCHAR(255) NOT NULL,
+      status VARCHAR(50),
+      role VARCHAR(50),
+      last_active VARCHAR(50)
+    );
+    CREATE USER tu_usuario WITH PASSWORD 'tu_contraseña';
+    GRANT ALL PRIVILEGES ON DATABASE base_de_datos TO tu_usuario;
+    GRANT ALL PRIVILEGES ON TABLE tabla TO tu_usuario;
+  ```
