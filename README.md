@@ -9,25 +9,31 @@ La aplicación se levanta utilizando la herramienta de uvicorn.
 - Crear un ambiente con miniconda:
 
   Ejecutar:
-  
+  ```bash
     wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
-  
+  ```
+  ```bash
     bash Miniconda3-latest-Linux-x86_64.sh
-  
+  ```
+  ```bash
     conda create --name myenv python=3.12
-  
+  ```
 - Dentro del proyecto ejecuta:
+    ```bash
     bash install_requirements.sh
-  
+    ```
+    
 - Para levantar el proyecto ejecuta:
+    ```bash
     python -m uvicorn main:app --reload
+    ```
   
 - Si prefieres que el proyecto se levante siempre al iniciar la máquina (WSL) debes crear el archivo .service de la siguiente forma:
 
   Ejecutar:
-  
+  ```bash
     sudo nano /etc/systemd/system/fastapi_prueba.service
-  
+  ```
   El archivo debe verse así:
   
     [Unit]
@@ -47,15 +53,24 @@ La aplicación se levanta utilizando la herramienta de uvicorn.
   
   Para habilitar systemd en WSL:
   
-  1. Se debe contar con wsl 2, se puede validar en powershell con: wsl -l -v
-  2. Correr en WSL: sudo nano /etc/wsl.conf
-  3. Copiar lo siguiente:
+  1. Se debe contar con wsl 2, se puede validar en powershell con:
+    ```bash
+     wsl -l -v
+    ```
+  3. Correr en WSL:
+    ```bash
+     sudo nano /etc/wsl.conf
+    ```
+  4. Copiar lo siguiente:
 
     [boot]
     systemd=true
   
-  5. Correr en powershell: wsl --shutdown
-  6. Si todo fue correcto, en Linux al correr lo siguiente debería aparecer systemd: systemctl list-units --type=service
+  5. Correr en powershell:
+    ```bash
+     wsl --shutdown
+    ```
+  7. Si todo fue correcto, en Linux al correr lo siguiente debería aparecer systemd: systemctl list-units --type=service
 
   Para activar el servicio cada que se inicie la máquina:
   1. Recargar los servicios de systemd: sudo systemctl daemon-reload
@@ -74,3 +89,8 @@ La aplicación se levanta utilizando la herramienta de uvicorn.
     DB_NAME='base_de_datos'
     DB_USER='tu_usuario'
     DB_PASSWORD='tu_contraseña'
+
+- comando para entrar a psql
+  ```bash
+  sudo -u postgres psql
+  ```
